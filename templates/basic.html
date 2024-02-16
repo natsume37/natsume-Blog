@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='ico/iconfont.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/my.css') }}">
+    {#  块标题  #}
+    <title>{% block mytitle %}
+    {% endblock %}</title>
+
+    {#块样式，使用bootstrap.load_css()加载bootstrap的css资源#}
+    {% block mystyle %}{{ bootstrap.load_css() }}{% endblock %}
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+</head>
+<body>
+{#块导航栏#}
+{#{% block navbar %}#}
+{#navbar navbar-expand-lg bg-nav justify-content-between#}
+{#navbar navbar-expand-lg bg-body-tertiary #}
+<nav class="navbar navbar-expand-lg bg-nav justify-content-between fixed-top bg-body-tertiary">
+    <div class="container-fluid mb-3">
+        <span class="iconfont icon-blogger"></span>
+        <a class="navbar-brand" href="#">Blogin</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto" style="gap: 50px">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/"><span class="iconfont icon-zhuye"></span>主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/album"><span class="iconfont icon-xiangce
+"></span>相册</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><span class="iconfont icon-guidang"></span>归档</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><span class="iconfont icon-gongju1"></span>工具</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        more
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">毒鸡汤</a></li>
+                        <li><a class="dropdown-item" href="#">api</a></li>
+                        <li><a class="dropdown-item" href="#">建站日志</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">no pain no gain</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+{#{% endblock %}#}
+
+{#块内容#}
+{% block my_card %}
+{% endblock %}
+{% block my_album %}
+{% endblock %}
+{% block bottom %}
+    <div class="card-body text-center px-0 f-14 blog_bottom d-flex justify-content-center align-items-center">
+        <div class="bottom_set">
+            <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2024</span>
+                <a href="https://github.com/natsume37" class="text-decoration-none footer-a" target="_blank"
+                   title="博客作者的Github">Blogin</a>.&nbsp;Design&nbsp;by&nbsp;Flask3.0.
+            </p>
+            <p class="mb-0">
+                <a href="http://beian.miit.gov.cn/" class="text-decoration-none footer-a"
+                   target="_blank">湘ICP备2020018236号-1</a>&nbsp;<span id="web-day">| 网站已上线 1238 天</span>
+            </p>
+        </div>
+
+        <script>
+            function getNewYear() {
+                let d = new Date();
+                let old = new Date('2024/01/17');
+                let x = document.getElementById("year-info");
+                x.innerHTML = d.getFullYear();
+                let y = document.getElementById("web-day");
+                let dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+                let d_str = "| 网站已上线 " + dd + " 天";
+                y.innerHTML = d_str;
+            }
+
+            getNewYear();
+        </script>
+    </div>
+{% endblock %}
+
+{#块JavaScript ，使用bootstrap.load_js()加载bootstrap的JavaScript资源#}
+{% block scripts %}{{ bootstrap.load_js() }}{% endblock %}
+</body>
+</html>

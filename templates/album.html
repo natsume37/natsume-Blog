@@ -1,0 +1,93 @@
+{% extends 'basic.html' %}
+{% block mytitle %}album{% endblock %}
+{% block my_card %}
+    {#    面包屑#}
+    <div class="my_album" style="width:100%; padding: 10px 10px; height: 3rem;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" style="text-align: center">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style='font-family: "微软雅黑",sans-serif;'>喜欢看着世界</li>
+            </ol>
+        </nav>
+    </div>
+    {#图片网格#}
+    <div class="container text-center">
+        <div class="row">
+            {#第一列#}
+            <div class="col">
+                {% for _ in range(3) %}
+                    <div class="card my_life_pic" style="width: 25rem;">
+                        <img src="{{ url_for('static',filename='img/love_pic/waisheng.jpg') }}" class="card-img-top"
+                             alt="...">
+                        <div class="card-body">
+                            <a class="text-decoration-none text-muted" href="/gallery/photo/1"> 筝筝纸鸢 </a>
+                            <div class="container text-center">
+                                <div class="row" style="width:100%;">
+                                    <div class="col">
+                                        <span>1</span>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+            {#第二列#}
+            <div class="col">
+                {% for _ in range(3) %}
+                    <div class="card my_life_pic" style="width: 25rem;">
+                        <img src="{{ url_for('static',filename='img/love_pic/waisheng.jpg') }}" class="card-img-top"
+                             alt="...">
+                        <div class="card-body">
+                            <a class="text-decoration-none text-muted" href="/gallery/photo/1"> 筝筝纸鸢 </a>
+                            <div class="container text-center">
+                                <div class="row" style="width:100%;">
+                                    <div class="col">
+                                        <span>1</span>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+            {#第三列#}
+            <div class="col">
+                {% for _ in range(3) %}
+                    <div class="card my_life_pic" style="width: 25rem;">
+                        <img src="{{ url_for('static',filename='img/love_pic/waisheng.jpg') }}" class="card-img-top"
+                             alt="...">
+                        <div class="card-body">
+                            <a class="text-decoration-none text-muted" href="/gallery/photo/1"> 筝筝纸鸢 </a>
+                            <div class="container text-center">
+                                <div class="row" style="width:100%;">
+                                    <div class="col">
+                                        <span>1</span>
+                                        <span>2</span>
+                                    </div>
+                                    <div class="col">
+                                        <span>3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center" style="height: 4vh;">
+        <button type="button" id="next_pic" class="btn btn-outline-success">NEXT</button>
+    </div>
+{% endblock %}
