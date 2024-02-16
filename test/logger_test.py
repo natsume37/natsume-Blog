@@ -1,26 +1,12 @@
-# coding:utf-8
-# USER: 冷不丁
-# @FILE_NAME: settings
-# @TIME: 2024/1/16 16:26
 import logging
 import logging.config
-DEBUG = True
-SECRET_KEY = '123456'
-
-# 配置RedisCache缓存类型参数值，我们使用本地的redis，没有密码
-redis_config = {
-    'CACHE_TYPE': 'redis',  # 使用redis作为缓存
-    'CACHE_REDIS_HOST': '127.0.0.1',  # redis地址
-    'CACHE_REDIS_PORT': 6379  # redis端口号
-}
-
-# 日志配置字典
 import os.path
 
 # 路径配置
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # 项目根目录
 INFO_LOG_DIR = os.path.join(BASE_DIR, "log", 'info.log')
 ERROR_LOG_DIR = os.path.join(BASE_DIR, "log", 'error.log')
+DEBUG_LOG_DIR = os.path.join(BASE_DIR, "log", 'debug.log')
 
 LOGGING_DIC = {
     'version': 1.0,
@@ -59,7 +45,7 @@ LOGGING_DIC = {
         'file_debug_handler': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',  # 保存到文件
-            'filename': f'{ERROR_LOG_DIR}',  # 日志存放的路径
+            'filename': f'{DEBUG_LOG_DIR}',  # 日志存放的路径
             'encoding': 'utf-8',  # 日志文件的编码
             'formatter': 'test',
         },
@@ -72,23 +58,29 @@ LOGGING_DIC = {
             'propagate': False,  # 默认为True，向上（更高级别的logger）传递，设置为False即可，否则会一份日志向上层层传递
         },
         'logger2': {
-            'handlers': ['console_debug_handler', 'file_debug_handler'],
+            'handlers': ['console_debug_handler', 'file_info_handler'],  # 及答应到终端、也保存到文件
             'level': 'INFO',
             'propagate': False,
         },
-        # 万能日志记录器
         '': {
-            'handlers': ['console_debug_handler', 'file_debug_handler'],  # 及答应到终端、也保存到文件
-            'level': 'INFO',
+            'handlers': ['console_debug_handler', 'file_info_handler'],  # 及答应到终端、也保存到文件
+            'level': 'DEBUG',
             'propagate': False,
         },
     }
 }
-
-# 使用
-logging.config.dictConfig(LOGGING_DIC)
-logging1 = logging.getLogger("logger1")
-logging1.debug("这是一条测试数据")
-
-
 # 注：进行日志轮转的日志文件，不能和其他handler共用，不然会导致文件被占用无法更名而报错！
+print(BASE_DIR)
+print(INFO_LOG_DIR)
+print(ERROR_LOG_DIR)
+
+for i in range(10):
+    logging.config.dictConfig(LOGGING_DIC)
+    logging1 = logging.getLogger("logger1")
+    logging1.debug("这是一条测试数据")
+    logging2 = logging.getLogger("logger2")
+    logging2.warning("这是一条测试数据")
+    logging3 = logging.getLogger("这是自定义名称的记录器")
+    logging3.debug("只要找不到、就用记录器名称为空的记录器")
+    logging4 = logging.getLogger("记录器二号")
+    logging4.debug("这是另一个记录器")
