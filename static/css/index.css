@@ -1,0 +1,45 @@
+li.dis_mis {
+    list-style: none;
+}
+
+/*右上角下拉菜单*/
+/* 用于隐藏下拉菜单 */
+#dropdownMenu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 5px); /* 调整菜单位置 */
+}
+
+/* 用于显示下拉菜单 */
+#dropdownMenu.show {
+    display: block;
+}
+
+/* 用于添加悬浮特效 */
+#userDropdownToggle:hover + #dropdownMenu,
+#dropdownMenu:hover {
+    display: block;
+}
+
+/*.content_l {
+    background-color: red;
+}
+
+.content_r {
+    background-color: blue;
+}*/
+
+#article_box {
+    display: flex; /* 使用 Flex 布局 */
+    flex-wrap: wrap; /* 允许换行 */
+    justify-content: space-around; /* 内容居中对齐 */
+    justify-items: center;
+    
+
+
+}
+.card_about {
+    background-color: #ecf0f1;
+    border-radius:5px 5px
+}

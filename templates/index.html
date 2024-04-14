@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block my_css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/index.css' ) }}">
+{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="container text-center mt-3">
+        <div class="row justify-content-md-center">
+            <div class="row">
+                <div class="col-md-8 content_l">
+                    <div class="card-body py-3 mb-4 py-3">
+                        <div class="row card_about me-auto mx-auto mb-3">
+                            <div class="col-3" >
+                                <img class="img-fluid rounded" alt="OwnerAvatar"
+                                     src="https://2dogz.cn/accounts/avatar/Macvcarton-avatar.png">
+                            </div>
+                            <div class="col-9 mb-4">
+                                <h3><strong>Blogin</strong></h3>
+                                <p class="text-muted">个人网站: <i class="fa fa-link"></i> <a class="text-muted gray-a"
+                                                                                              href="http://2dogz.cn"
+                                                                                              target="_blank">natsume的Blog</a>
+                                </p>
+                                <p class="text-muted">建站时间: <i class="fa fa-clock-o"></i> 2024-4-12</p>
+                                <p class="text-muted">联系邮箱: <i class="fa fa-envelope"></i> <a
+                                        class="text-decoration-none text-muted" href="mailto:natsume37@outlook.com">natsume37@outlook.com</a>
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                        {#添加flex布局#}
+                        <div id="article_box">
+                            {#加载文章#}
+                            {% if articles %}
+                                {% for article in articles %}
+                                    <div class="card mb-4" style="width: 15rem;">
+                                        <img src="{{ article.article_cover }}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ article.article_title }}</h5>
+                                            <a href="/article/{{ article.id }}.html" class="btn btn-primary">更多</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col content_r">
+                    <div class="col-lg-4">
+                        {# 毒鸡汤#}
+                        <ul class="list-group mb-3 text-start" style="width:25.5em">
+                            <li class="list-group-item active" aria-current="true"
+                                style="background-color:#f4f4f4;color:black">
+                                毒鸡汤
+                            </li>
+                            <li class="list-group-item text-left">
+                                <p id="hitokoto">
+                                <p href="#" id="hitokoto_text">:D 获取中...</p>
+                                </p>
+                            </li>
+                        </ul>
+                        {# 近期计划#}
+                        <ul class="list-group mb-3 text-start" style="width:25.5em">
+                            <li class="list-group-item active" aria-current="true"
+                                style="background-color:#f4f4f4;color:black">
+                                近期计划
+                            </li>
+                            <li class="list-group-item text-left">
+                                把毕业设计写完
+                                <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar bg-success" style="width: 25%"></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item text-left">
+                                把毕业论文写完
+                                <div class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="75"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar bg-warning" style="width: 2%"></div>
+                                </div>
+                            </li>
+                            <li class="list-group-item text-left">
+                                玩
+                                <div class="progress" role="progressbar" aria-label="Danger example" aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar bg-danger" style="width: 100%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        {# 文章类别#}
+                        <ul class="list-group mb-3 text-start" style="width:25.5em">
+                            <li class="list-group-item active" aria-current="true"
+                                style="background-color:#f4f4f4;color:black">
+                                文章类别
+                            </li>
+                            <li class="list-group-item text-left">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                python基础
+                                <span class="badge bg-primary rounded-pill">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Python爬虫开发
+                                <span class="badge bg-primary rounded-pill">2</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                web前端开发集合
+                                <span class="badge bg-primary rounded-pill">1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                flask-web开发
+                                <span class="badge bg-primary rounded-pill">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                吾爱真理
+                                <span class="badge bg-primary rounded-pill">2</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                朝花夕拾
+                                <span class="badge bg-primary rounded-pill">1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                git
+                                <span class="badge bg-primary rounded-pill">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                好文收录
+                                <span class="badge bg-primary rounded-pill">2</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                陈词滥调
+                                <span class="badge bg-primary rounded-pill">1</span>
+                            </li>
+                        </ul>
+                        {# 广告位#}
+                        <ul class="list-group mb-3 text-start" style="width:25.5em">
+                            <li class="list-group-item active" aria-current="true"
+                                style="background-color:#f4f4f4;color:black">
+                                广告位
+                            </li>
+                            <li class="list-group-item text-left">
+                                <p>广告位出租，V我50,感激不尽</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts_my %}
+    <script>
+        fetch('https://v1.hitokoto.cn')
+            .then(response => response.json())
+            .then(data => {
+                const hitokoto = document.querySelector('#hitokoto_text')
+                hitokoto.href = `https://hitokoto.cn/?uuid=${data.uuid}`
+                hitokoto.innerText = data.hitokoto
+            })
+            .catch(console.error)
+    </script>
+
+{% endblock %}

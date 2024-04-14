@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    {{ share.load(serve_local=True) }}
+    {{ ckeditor.load_code_theme() }}
+    {% if request.cookies.get('blog_theme', 'light') == 'light' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/docoo.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/pre-light.css') }}">
+    {% else %}
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/monokai.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'css/pre-dark.css') }}">
+    {% endif %}
+    <script src="{{ url_for('static', filename='ckeditor5-build-classic-22.0.0/ckeditor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+    <link type="text/css" href="/static/css/style.css">
+    <style>
+        .ck-editor__editable {
+            min-height: 100px;
+            color: #0a0a0a;
+        }
+
+        .p-line-bottom {
+            border-bottom: 1px solid #cccccc;
+        }
+
+        pre:after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: #fc625d;
+            width: 10px;
+            height: 10px;
+            top: 0;
+            left: 15px;
+            margin-top: 11px;
+            -webkit-box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+            box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+        }
+
+        code {
+            margin-top: 1.6rem;
+        }
+
+        pre code {
+            background: 0 0;
+            text-shadow: none;
+            padding: 0;
+        }
+
+        pre span {
+            word-break: break-all;
+            -ms-word-wrap: break-word;
+        }
+    </style>
+    {{ moment.locale(auto_detect=True) }}
+{% endblock %}
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+{% block content %}
+    {% include "big-image.html" %}
+    {% include 'fix-slider.html' %}
+    <main>
+        {% if histories %}
+            <div class="history-fixed-div">
+                <p class="text-muted p-line-bottom"><b>{{ _('Modify Record') }}</b></p>
+                <ol>
+                    {% for history in histories %}
+                        <li>
+                            <a target="_blank" class="text-info-a"
+                               href="{{ url_for('blog_bp.blog_history', h_id=history.id) }}">{{ history.timestamps }}</a><br>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endif %}
+
+        <div class="container">
+            {% for message in get_flashed_messages(with_categories=True) %}
+                <div style="margin-top: 5px" class="alert alert-{{ message[0] }}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message[1] }}
+                </div>
+            {% endfor %}
+            <nav style="padding-top: 10px" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a class="text-info-a" href="/">{{ _('Home') }}</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a class="text-info-a" href="/blog/cate/{{ cate.id }}/">{{ cate.name }}</a>
+                    </li>
+                    <li class="breadcrumb-item active d-none d-md-block" aria-current="page">{{ blog.title }}</li>
+                    <li class="breadcrumb-item active d-md-none" aria-current="page">{{ _('Position') }}</li>
+                    {% if current_user.role_id == 1 %}
+                        <li class="breadcrumb-item float-right" aria-current="page"><a
+                                href="/backend/blog/edit/{{ blog.id }}">{{ _('Edit') }}</a></li>
+                    {% endif %}
+                </ol>
+            </nav>
+            <div class="blog-content-div">
+                <div class="text-center">
+                    <h2 class="blog-title">{{ blog.title }}</h2>
+                </div>
+                <div class="text-center">
+                    <span class="badge badge-important"><i class="fa fa-calendar"></i> {{ blog.create_time }}</span>
+                    <span class="badge badge-important"><i class="fa fa-tag"></i> {{ cate.name }}</span>
+                    <span class="badge badge-important"><i class="fa fa-book"></i> {{ blog.read_times }}</span>
+                    <hr>
+                </div>
+                <div class="text-muted">
+                    <h1 class="introduce-h1">{{ _('Introduce') }}</h1>
+                    {{ blog.introduce }}
+                    <hr>
+                </div>
+                <div class="div-article">
+                    <article>
+                        {{ blog.content|safe }}
+                    </article>
+                </div>
+            </div>
+            <div class="blog-content-div">
+                <article>
+                    {{ article_content|safe }}
+                    <div class="cc">
+                        <div>{{ _('Copyright') }}：<i class="fa fa-cc-paypal"></i> {{ _('Write is not easy, please indicate the source when reprinting!') }}</div>
+                        <div>{{ _('Post Link')}}：<a class="text-info" href="http://2dogz.cn/blog/article/{{ blog.id }}/">http://2dogz.cn/blog/article/{{ blog.id }}/</a>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        {{ share.create(addition_class='text-center',title='') }}
+                    </div>
+                </article>
+                <div class="text-center">
+                    <button data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-success"><i
+                            class="fa fa-heart-o"></i>{{ _('Sponsor') }}
+                    </button>
+                </div>
+                <div class="d-flex">
+                    {% if pre_post %}
+                        <a href="/blog/article/{{ pre_post.id }}" class="flex-grow-1"><i
+                                class="fa fa-arrow-circle-o-left"></i>{{ pre_post.title }}</a>
+                    {% else %}
+                        <a class="flex-grow-1"></a>
+                    {% endif %}
+                    {% if next_post %}
+                        <a href="/blog/article/{{ next_post.id }}">{{ next_post.title }}<i
+                                class="fa fa-arrow-circle-o-right"></i></a>
+                    {% endif %}
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fa fa-coffee"></i> {{ _('Buy Coffee~') }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" class="fa fa-close"></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <i class="fa fa-weixin"></i> {{ _('Wechat') }}<img class="img-fluid"
+                                                                               src="/static/img/donate/wechatpay.png">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <i class="fa fa-cc-paypal"></i> {{ _('Alipay') }}<img class="img-fluid"
+                                                                                   src="/static/img/donate/alipay.jpg">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-content-div">
+                {% include "comment.html" %}
+                <p class="text-muted"><strong>{{ _('%(count)s comments', count=comments|length) }}</strong></p>
+                <hr>
+                {% include "commentContent.html" %}
+            </div>
+            {% include "_top.html" %}
+        </div>
+
+    </main>
+    <script>
+        $("pre").mouseover(function (e) {
+            let _that = $(this);
+            _that.css("position", "relative");
+            _that.addClass("activePre");
+            let copyBtn = _that.find('.copyBtn');
+            if (!copyBtn || copyBtn.length <= 0) {
+                let copyBtn = '<span onclick="copyCode()" class="copyBtn"><i class="fa fa-copy"></i></span>';
+                _that.append(copyBtn);
+            }
+        }).mouseout(function (e) {
+            let _that = $(this);
+            let copyBtn = _that.find('.copyBtn');
+            let copyBtnHover = _that.find('.copyBtn:hover');
+            if (copyBtnHover.length === 0) {
+                copyBtn.remove();
+                _that.removeClass("activePre");
+            }
+        });
+
+        function copyCode() {
+            let activePre = $(".activePre");
+            if (!activePre || activePre.length <= 0) {
+                return;
+            }
+            activePre = activePre[0];
+            let clone = $(activePre).clone();
+            clone.find('.copyBtn').remove();
+            let clipboard = new ClipboardJS('.copyBtn', {
+                text: function () {
+                    return clone.text();
+                }
+            });
+            clipboard.on("success", function (e) {
+                $(".copyBtn").html("复制成功");
+                clipboard.destroy();
+                clone.remove();
+            });
+
+            clipboard.on("error", function (e) {
+                clipboard.destroy();
+                clone.remove();
+            });
+        }
+
+        let editor;
+        ClassicEditor.create(document.querySelector('#comment-editor'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+            heading: {
+                options: [
+                    {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
+                    {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
+                    {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'},
+                    {model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3'},
+                    {model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4'},
+                ]
+            }
+        }).then(newEditor => {
+            editor = newEditor;
+        })
+            .catch(error => {
+                console.log(error);
+            });
+
+        function submitComment() {
+            const comment = editor.getData();
+            let blogId = $("#subCommentBtn").data('blogid');
+            if (!comment) {
+                $("#commentErrorHint").removeAttr('hidden');
+                $("#commentErrorHint").show().delay(3000).hide(500);
+                return false;
+            }
+            $.ajax({
+                url: "/blog/comment/",
+                type: "post",
+                data: {'comment': comment, 'blogID': blogId},
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        }
+
+        function replyUserComment() {
+            let reply = editor.getData();
+            let blogId = $("#subCommentBtn").data('blogid');
+            let parent = sessionStorage.getItem('parent');
+            let replyID = sessionStorage.getItem('rep_id');
+            if (!reply) {
+                $("#commentErrorHint").removeAttr('hidden');
+                $("#commentErrorHint").show().delay(2000).hide(200);
+                return false;
+            }
+            if (parent == 'null') {
+                parent = replyID;
+            }
+            $.ajax({
+                url: "/blog/comment/",
+                type: "post",
+                data: {'comment': reply, 'blogID': blogId, 'parentID': parent, 'replyID': replyID},
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        }
+
+        function submitDelete(commid) {
+            $.ajax({
+                url: '/blog/comment/delete/',
+                type: 'POST',
+                data: {'comm_id': commid},
+                success: function () {
+                    window.location.reload();
+                },
+                error: function () {
+                }
+            })
+        }
+    </script>
+{% endblock %}

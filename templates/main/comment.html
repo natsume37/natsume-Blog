@@ -1,0 +1,22 @@
+{% if 'user' in session %}
+    <div style="margin: 5px">
+        <form class="form-inline" action="/add_comment/{{ article.id }}" method="POST">
+            <div class="input-group">
+                <span class="input-group-text">评论：</span>
+                <textarea class="form-control" aria-label="With textarea" name="comment_out"></textarea>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+{% else %}
+    <div class="text-center login-hint">
+        <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
+            <div>您尚未登录，
+                <a href="/login"><span class="">登录</span></a> 或
+                <a href="/register"><span class="">注册</span></a> 后评论
+                <hr>
+                {#                <a href="/login/github"><i class="fa fa-github-square fa-2x"></i></a>#}
+            </div>
+        </div>
+    </div>
+{% endif %}

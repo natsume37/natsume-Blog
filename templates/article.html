@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block my_css %}
+    <style>
+        body, h1, h2, h3, h4, h5, h6, p, ul, ol, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-left: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+    </style>
+
+
+{% endblock %}
+{% block content %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    <h1>{{ article.article_title }}</h1>
+    <div>{{ article.article_content |md|safe }}</div>
+    <div>
+        <span>发布时间：{{ article.create_time }}</span>
+    </div>
+    <div>
+        <span>发布人：{{ article.update_by }}</span>
+    </div>
+{% endblock %}
+{#评论模块#}
+{% block comment %}
+    {% if comments %}
+        <ul class="list-group list-group-flush mt-3">
+            {% for comment in comments %}
+                <li class="list-group-item">{{ comment.comment_content }} </li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+    <hr>
+    {% include './main/comment.html' %}
+{% endblock %}

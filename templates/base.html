@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {#  块标题  #}
+    <title>{% block mytitle %}
+        首页
+    {% endblock %}</title>
+
+    {#块样式，使用bootstrap.load_css()加载bootstrap的css资源#}
+    {% block mystyle %}{{ bootstrap.load_css() }}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/all_css.css' ) }}">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script src="{{ url_for('static',filename='js/all_.js' ) }}"></script>
+
+    {% block my_css %}
+    {% endblock %}
+</head>
+<body>
+{#块导航栏#}
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" style="background-color: transparent;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">相册</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            文章
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end"> {# Add dropdown-menu-end class here #}
+                            <li><a class="dropdown-item" href="#">系列教程</a></li>
+                            <li><a class="dropdown-item" href="#">杂谈</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">有所感悟</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">冷不丁</a>
+                    </li>
+                </ul>
+                <div class="text-end"> {# 添加 text-end class here #}
+                    <div class="">
+                        <div class="me-5">
+                            {% if 'user' in session %}
+                                <div class="position-relative"> {#  position-relative class #}
+                                    <img src="{{ user.avatar }}"
+                                         class="rounded-circle shadow-sm dropdown-toggle"
+                                         id="dropdownMenuButton"
+                                         data-bs-toggle="dropdown"
+                                         aria-expanded="false"
+                                         alt="..."
+                                         style="width: 6%;">
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        {# Add dropdown-menu-end class here #}
+                                        <li><a class="dropdown-item" href="/about">个人详情</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">退出</a></li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                {#<div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        Dropdown
+                                    </button>#}
+                                <div class="position-relative"> {# Add position-relative class here #}
+                                    <img src="{{ url_for("static", filename="img/默认头像.jpg") }}"
+                                         class="rounded-circle shadow-sm dropdown-toggle"
+                                         id="dropdownMenuButton"
+                                         data-bs-toggle="dropdown"
+                                         aria-expanded="false"
+                                         alt="..."
+                                         style="width: 6%;">
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        {# Add dropdown-menu-end class here #}
+                                        <li><a class="dropdown-item" href="{{ url_for('login') }}">登录</a></li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+{#块内容#}
+{% block concent %}
+{% endblock %}
+
+{#评论模块#}
+{% block comment %}
+{% endblock %}
+{#块JavaScript ，使用bootstrap.load_js()加载bootstrap的JavaScript资源#}
+{% block scripts %}{{ bootstrap.load_js() }}{% endblock %}
+
+{#块底部内容#}
+{% block footer %}
+    <div style="background-color:#dff9fb">
+        <p class="align-items-center" style="text-align: center;">备案号：违法网站未备案！</p>
+    </div>
+
+{% endblock %}
+{% block scripts_my %}
+{% endblock %}
+</body>
+</html>
